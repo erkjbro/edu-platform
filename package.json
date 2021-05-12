@@ -1,0 +1,11 @@
+{
+  "name": "edu-platform",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/erkjbro/edu-platform.git",
+  "author": "Erik J Brown <erkjbro@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.1.0"
+  }
+}
