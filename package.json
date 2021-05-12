@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/erkjbro/edu-platform.git",
-  "author": "Erik J Brown <erkjbro@gmail.com>",
+  "author": "Erik J Brown <erkjbro@erikjbrown.tech>",
   "license": "MIT",
+  "scripts": {
+    "frontend": "yarn --cwd client start",
+    "backend": "yarn --cwd backend start",
+    "start": "concurrently \"yarn run backend\" \"yarn run frontend\""
+  },
   "dependencies": {
     "concurrently": "^6.1.0"
   }
