@@ -1,7 +1,11 @@
 {
-  "name": "web-client",
+  "name": "edu-web-client",
   "version": "0.1.0",
   "private": true,
+  "repository": "https://github.com/erkjbro/edu-platform.git",
+  "author": "Erik J Brown <erkjbro@erikjbrown.tech>",
+  "description": "web client for the edu platfrom",
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

@@ -1,7 +1,11 @@
 {
-  "name": "backend",
+  "name": "edu-backend",
   "version": "0.1.0",
   "main": "dist/index.js",
+  "private": true,
+  "repository": "https://github.com/erkjbro/edu-platform.git",
+  "author": "Erik J Brown <erkjbro@erikjbrown.tech>",
+  "description": "REST API for the edu platfrom",
   "license": "MIT",
   "type": "module",
   "scripts": {
