@@ -1,0 +1,25 @@
+{
+  "short_name": "EDU Platform",
+  "name": "Education Course Platform",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "ejb-logo-v1-orange.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "ejb-logo-v2-orange.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
