@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
 import { RequestHandler } from 'express';
 
 import HttpError from '../models/http-error.js';
@@ -64,6 +63,7 @@ export const postSignup = (async (req, res, next) => {
       {
         userId: createdUser.id,
         email: createdUser.email,
+        role: createdUser.role,
       },
       process.env.JWT_KEY as jwt.Secret,
       {
@@ -91,16 +91,66 @@ export const postLogin = (async (req, res, next) => {
   // validation check
 
   // get data from body
+  const { email, password }: User = req.body;
 
   // check if user / admin exists
+  let existingUser;
+  try {
+    existingUser = await UserModel.findOne({ email });
+
+    if (!existingUser) {
+      const error = new HttpError('Invalid credentials; could not login.', 422);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Login failed; please try again later.', 500);
+    return next(error);
+  }
 
   // compare passwords
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+
+    if (!isValidPassword) {
+      const error = new HttpError('Invalid credentials; could not login.', 401);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      'Could not login; please check your credentials and try again.',
+      500
+    );
+    return next(error);
+  }
 
   // sign jwt
+  let token;
+  try {
+    token = jwt.sign(
+      {
+        userId: existingUser.id,
+        email: existingUser.email,
+        role: existingUser.role,
+      },
+      process.env.JWT_KEY as jwt.Secret,
+      {
+        expiresIn: '3h',
+      }
+    );
+  } catch (err) {
+    const error = new HttpError('Something went wrong; please try again.', 500);
+    return next(error);
+  }
 
   // respond w/ userId, userType, email, token
   res.json({
-    message: 'login route',
-    data: null,
+    message: 'Login completed successfully!',
+    data: {
+      userId: existingUser.id,
+      email: existingUser.email,
+      role: existingUser.role,
+      token,
+    },
   });
 }) as RequestHandler;
