@@ -1,15 +1,8 @@
-import { model, Document, Model, Schema, Types } from 'mongoose';
+import { model, Model, Schema, Types } from 'mongoose';
 
-import { IUser } from './user';
+import { Course } from './interfaces';
 
-export interface ICourse extends Document {
-  title: string;
-  creator: IUser['_id'];
-  skillLevel: 'beginner' | 'intermediate' | 'advanced';
-  description: string;
-}
-
-const CourseSchema: Schema = new Schema({
+const courseSchema: Schema = new Schema({
   title: {
     type: String,
     required: true,
@@ -28,6 +21,16 @@ const CourseSchema: Schema = new Schema({
   },
 });
 
-const Course: Model<ICourse> = model('Course', CourseSchema);
+export const CourseModel: Model<Course> = model('Course', courseSchema);
 
-export default Course;
+/*
+// course sessions?
+term: "fall 2021, etc?"
+students: [{
+  studentId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'student',
+    required: true
+  },
+}]
+*/
