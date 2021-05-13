@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "start:build": "tsc -w",
-    "start:run": "nodemon dist/index.js",
+    "start:run": "DOTENV_CONFIG_PATH=.env.development nodemon -r dotenv/config dist/index.js",
     "start": "concurrently yarn:start:*"
   },
   "dependencies": {

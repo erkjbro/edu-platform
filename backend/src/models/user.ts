@@ -1,8 +1,8 @@
-import { model, Document, Model, Schema, Types } from 'mongoose';
+import mongoose, { Model, Schema } from 'mongoose';
 
-import { User } from './interfaces';
+import { User } from './interfaces/index.js';
 
-const userSchema: Schema = new Schema({
+const userSchema: Schema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -26,11 +26,11 @@ const userSchema: Schema = new Schema({
   },
   courses: [
     {
-      type: Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: 'Course',
       required: true,
     },
   ],
 });
 
-export const UserModel: Model<User> = model('User', userSchema);
+export const UserModel: Model<User> = mongoose.model('User', userSchema);

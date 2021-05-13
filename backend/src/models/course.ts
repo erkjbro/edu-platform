@@ -1,14 +1,14 @@
-import { model, Model, Schema, Types } from 'mongoose';
+import mongoose, { Model, Schema } from 'mongoose';
 
-import { Course } from './interfaces';
+import { Course } from './interfaces/index.js';
 
-const courseSchema: Schema = new Schema({
+const courseSchema: Schema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
   creator: {
-    type: Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     required: true,
   },
   skillLevel: {
@@ -21,7 +21,10 @@ const courseSchema: Schema = new Schema({
   },
 });
 
-export const CourseModel: Model<Course> = model('Course', courseSchema);
+export const CourseModel: Model<Course> = mongoose.model(
+  'Course',
+  courseSchema
+);
 
 /*
 // course sessions?
