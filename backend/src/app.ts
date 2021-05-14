@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { authRoutes } from './routes/auth-routes.js';
+import { courseRoutes } from './routes/course-routes.js';
 import { userRoutes } from './routes/user-routes.js';
 import { errorRoutes } from './routes/error-routes.js';
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 // --- Routes ---
 app.use('/api/auth', authRoutes);
+app.use('/api/course', courseRoutes);
 app.use('/api/user', userRoutes);
 app.use(errorRoutes);
 

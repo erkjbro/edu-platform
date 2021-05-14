@@ -8,6 +8,7 @@ interface CourseAttrs {
 }
 
 export interface CourseDoc extends mongoose.Document {
+  push(createdCourse: CourseDoc): any;
   title: string;
   creator: UserDoc['_id'];
   skillLevel: 'beginner' | 'intermediate' | 'advanced';
