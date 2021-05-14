@@ -12,7 +12,7 @@ router.patch('/:userId', (req, res, next) => console.log('update user'));
 
 router.delete('/:userId', (req, res, next) => console.log('delete user'));
 
-router.get('/', (req, res, next) => {});
+router.get('/courses/:userId', (req, res, next) => res.json('user courses'));
 
 router.get('/', (req, res, next) => {});
 
