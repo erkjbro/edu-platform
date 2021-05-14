@@ -4,16 +4,29 @@ import HttpError from '../models/http-error.js';
 import { User } from '../models/user.js';
 import { CourseDoc } from '../models/course.js';
 
-// find users [filter / pagination]
+// find users [filter / pagination] w/o admins
 export const getUsers = (async (req, res, next) => {
   let users;
 
   // try / catch
-  users = await User.find({}, '-password');
+  users = await User.find({ role: { $ne: 'admin' } }, '-password');
 
   res.json({
     message: 'Fetched users successfully!',
     data: users,
+  });
+}) as RequestHandler;
+
+// find students
+export const getStudents = (async (req, res, next) => {
+  let students;
+
+  // try / catch
+  students = await User.find({ role: { $eq: 'student' } }, '-password');
+
+  res.json({
+    message: 'Fetched students successfully!',
+    data: students,
   });
 }) as RequestHandler;
 
