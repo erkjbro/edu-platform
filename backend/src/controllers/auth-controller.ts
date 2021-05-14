@@ -11,6 +11,18 @@ export const postSignup = (async (req, res, next) => {
   // Extract data from body
   const { firstName, lastName, email, password, role }: UserDoc = req.body;
 
+  if (role === 'admin') {
+    const { adminCode } = req.params;
+
+    if (!adminCode || adminCode !== '424242') {
+      const error = new HttpError(
+        'User is not authorized to create an admin account.',
+        403
+      );
+      return next(error);
+    }
+  }
+
   // Check if user exists already
   try {
     const existingUser = await User.findOne({ email });
