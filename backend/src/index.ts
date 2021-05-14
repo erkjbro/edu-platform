@@ -12,7 +12,7 @@ if (!process.env.MONGODB_URI) {
 }
 
 try {
-  await mongoose.connect(process.env.MONGODB_URI as string, {
+  await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
