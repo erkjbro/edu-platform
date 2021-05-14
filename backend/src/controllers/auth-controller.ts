@@ -3,18 +3,17 @@ import jwt from 'jsonwebtoken';
 import { RequestHandler } from 'express';
 
 import HttpError from '../models/http-error.js';
-import { UserModel } from '../models/user.js';
-import { User } from '../models/interfaces/index.js';
+import { User, UserDoc } from '../models/user.js';
 
 export const postSignup = (async (req, res, next) => {
   // Validation Check... ?
 
   // Extract data from body
-  const { firstName, lastName, email, password, role }: User = req.body;
+  const { firstName, lastName, email, password, role }: UserDoc = req.body;
 
   // Check if user exists already
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await User.findOne({ email });
 
     // Compare - User already exists - 422
     if (existingUser) {
@@ -39,7 +38,7 @@ export const postSignup = (async (req, res, next) => {
   }
 
   // create user
-  const createdUser = new UserModel({
+  const createdUser = new User({
     firstName,
     lastName,
     role,
@@ -91,12 +90,12 @@ export const postLogin = (async (req, res, next) => {
   // validation check
 
   // get data from body
-  const { email, password }: User = req.body;
+  const { email, password }: UserDoc = req.body;
 
   // check if user / admin exists
   let existingUser;
   try {
-    existingUser = await UserModel.findOne({ email });
+    existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       const error = new HttpError('Invalid credentials; could not login.', 422);

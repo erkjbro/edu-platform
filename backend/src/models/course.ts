@@ -1,8 +1,24 @@
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-import { Course } from './interfaces/index.js';
+import { UserDoc } from './user.js';
 
-const courseSchema: Schema = new mongoose.Schema({
+interface CourseAttrs {
+  title: string;
+  creator: UserDoc['_id'];
+}
+
+export interface CourseDoc extends mongoose.Document {
+  title: string;
+  creator: UserDoc['_id'];
+  skillLevel: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+}
+
+interface CourseModel extends mongoose.Model<CourseDoc> {
+  build(attrs: CourseAttrs): CourseDoc;
+}
+
+const courseSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -21,10 +37,9 @@ const courseSchema: Schema = new mongoose.Schema({
   },
 });
 
-export const CourseModel: Model<Course> = mongoose.model(
-  'Course',
-  courseSchema
-);
+const Course = mongoose.model<CourseDoc, CourseModel>('Course', courseSchema);
+
+export { Course };
 
 /*
 // course sessions?

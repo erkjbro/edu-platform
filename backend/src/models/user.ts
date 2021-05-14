@@ -1,8 +1,37 @@
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-import { User } from './interfaces/index.js';
+import { CourseDoc } from './course.js';
 
-const userSchema: Schema = new mongoose.Schema({
+type UserRole = 'student' | 'teacher' | 'admin';
+
+// An interface that describes the properties
+// that are required to create a new User.
+interface UserAttrs {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: UserRole;
+}
+
+// An interface that describes the properties
+// that a User Document has.
+export interface UserDoc extends mongoose.Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: UserRole;
+  courses: CourseDoc;
+}
+
+// An interface that describes the properties
+// that a User Model has.
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
+}
+
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -33,4 +62,6 @@ const userSchema: Schema = new mongoose.Schema({
   ],
 });
 
-export const UserModel: Model<User> = mongoose.model('User', userSchema);
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
+
+export { User };
