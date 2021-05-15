@@ -78,17 +78,18 @@ export const setAuthRedirectPath = (
 //       returnSecureToken: true,
 //     };
 
-//     let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_WEB_API_KEY}`;
+//     let url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup`;
 
 //     if (!isSignup) {
-//       url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_WEB_API_KEY}`;
+//       url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
 //     }
 
 //     axios
 //       .post(url, authData)
 //       .then((res) => {
-//         const expirationDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
+//         const expirationDate = new Date(new Date().getTime() + 3 * 60 * 60 * 1000);
 
+//          // Check res data structure
 //         localStorage.setItem('token', res.data.idToken);
 //         localStorage.setItem('expirationDate', expirationDate);
 //         localStorage.setItem('userId', res.data.localId);

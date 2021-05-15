@@ -29,3 +29,10 @@ export interface SetAuthRedirectPathAction {
     path: string;
   };
 }
+
+export type Action =
+  | AuthStartAction
+  | AuthSuccessAction
+  | AuthFailAction
+  | AuthLogoutAction
+  | SetAuthRedirectPathAction;

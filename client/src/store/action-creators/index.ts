@@ -1,3 +1,6 @@
-export const defaultAction = () => {
-  return { type: '', payload: '' };
-};
+export {
+  // auth,
+  // authCheckState,
+  authLogout,
+  setAuthRedirectPath,
+} from './auth';
