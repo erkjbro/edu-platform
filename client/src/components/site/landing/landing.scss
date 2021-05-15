@@ -1,4 +1,7 @@
+@import 'styles/variables';
+
 .landing {
-  display: flex;
-  flex-direction: column;
+  @extend .page__layout;
+
+  padding: 0 1rem;
 }
