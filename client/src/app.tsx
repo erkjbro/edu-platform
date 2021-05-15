@@ -4,11 +4,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Navbar from './components/site/navbar/navbar';
 import Landing from './components/site/landing/landing';
 
-// import Auth from './components/auth/auth';
 const Auth = lazy(() => import('./components/auth/auth'));
-
 const AdminConsole = lazy(() => import('./components/admin'));
-
 const Dashboard = lazy(() => import('./components/student'));
 
 const App = () => {
