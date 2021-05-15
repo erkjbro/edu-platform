@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import './Auth.scss';
+import { Card } from '../ui-kit';
+import './auth.scss';
 
 const initialFormState = {
   name: {
@@ -47,7 +48,7 @@ const Auth = () => {
       {/* {error && <h1>Error</h1>} */}
       {/* {isLoading && <h1>Loading</h1>} */}
       {!isLoading && (
-        <div className='auth'>
+        <Card className='auth'>
           <h2>Authentication</h2>
           <div className='auth__card'>
             <form className='auth__card--form' onSubmit={handleAuthSubmit}>
@@ -109,10 +110,10 @@ const Auth = () => {
               </button>
             </form>
           </div>
-          <button onClick={handleAuthToggle}>
+          <button onClick={handleAuthToggle} className='auth__toggle--btn'>
             SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
           </button>
-        </div>
+        </Card>
       )}
     </>
   );

@@ -1,3 +1,42 @@
+@import 'styles/colors';
+@import 'styles/variables';
+
 .auth {
-  display: flex;
+  @extend .page__layout;
+
+  h2 {
+    width: fit-content;
+    padding: 0.2rem 2rem;
+    margin: 1rem auto;
+    border-bottom: 2px solid map-get($colors, primary);
+  }
+
+  .auth__toggle--btn {
+    margin: 1rem;
+  }
+
+  .auth__card {
+    width: 22rem;
+    max-width: 90vw;
+    margin: 0.2rem 1rem;
+    padding: 0 3rem;
+    justify-content: center;
+
+    .auth__card--form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin: 0.2rem;
+        padding: 0.2rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form__submit--btn {
+        align-self: center;
+        margin-top: 1rem;
+      }
+    }
+  }
 }
