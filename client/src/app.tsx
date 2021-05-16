@@ -1,15 +1,24 @@
-import { lazy, Suspense } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Navbar from './components/site/navbar/navbar';
 import Landing from './components/site/landing/landing';
+import { useActions } from './hooks/use-actions';
+import { useTypedSelector as useSelector } from './hooks/use-typed-selector';
 
 const Auth = lazy(() => import('./components/auth/auth'));
 const AdminConsole = lazy(() => import('./components/admin'));
 const Dashboard = lazy(() => import('./components/student'));
 
 const App = () => {
-  // const token = false;
+  const auth = useSelector((state) => state.auth);
+  const actions = useActions();
+
+  console.log(auth);
+
+  useEffect(() => {
+    actions.authCheckState();
+  }, [actions]);
 
   const routes = (
     <Switch>

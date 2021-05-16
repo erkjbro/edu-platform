@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { useActions } from '../../hooks/use-actions';
+// import { useTypedSelector as useSelector } from '../../hooks/use-typed-selector';
 import { Card } from '../ui-kit';
 import './auth.scss';
 
@@ -17,31 +19,31 @@ const initialFormState = {
 
 const Auth = () => {
   const [form, setForm] = useState(initialFormState);
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isSignupMode, setIsSignupMode] = useState(false);
 
   const isLoading = false;
 
-  useEffect(() => setForm({ ...initialFormState }), [isLoginMode]);
+  const actions = useActions();
+
+  useEffect(() => setForm({ ...initialFormState }), [isSignupMode]);
 
   const handleAuthSubmit = async (event: any) => {
     event.preventDefault();
 
-    let route = 'login';
     let body = {
       email: form.email.value,
       password: form.password.value,
       name: '',
     };
 
-    if (!isLoginMode) {
-      route = 'signup';
+    if (isSignupMode) {
       body.name = form.name.value;
     }
 
-    console.log(route);
+    actions.auth(body.email, body.password, isSignupMode);
   };
 
-  const handleAuthToggle = () => setIsLoginMode((prevState) => !prevState);
+  const handleAuthToggle = () => setIsSignupMode((prevState) => !prevState);
 
   return (
     <>
@@ -52,7 +54,7 @@ const Auth = () => {
           <h2>Authentication</h2>
           <div className='auth__card'>
             <form className='auth__card--form' onSubmit={handleAuthSubmit}>
-              {!isLoginMode && (
+              {isSignupMode && (
                 <label>
                   Name
                   <input
@@ -106,12 +108,12 @@ const Auth = () => {
                 />
               </label>
               <button type='submit' className='form__submit--btn'>
-                {!isLoginMode ? 'SIGNUP' : 'LOGIN'}
+                {isSignupMode ? 'SIGNUP' : 'LOGIN'}
               </button>
             </form>
           </div>
           <button onClick={handleAuthToggle} className='auth__toggle--btn'>
-            SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+            SWITCH TO {!isSignupMode ? 'SIGNUP' : 'LOGIN'}
           </button>
         </Card>
       )}

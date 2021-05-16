@@ -10,7 +10,16 @@ import {
   SetAuthRedirectPathAction,
   Action,
 } from '../actions';
-// import RootState from '../reducers';
+
+type AuthResponse = {
+  message: string;
+  data: {
+    email: string;
+    role: 'student' | 'teacher' | 'admin';
+    token: string;
+    userId: string;
+  };
+};
 
 export const authStart = (): AuthStartAction => {
   return {
@@ -64,14 +73,18 @@ export const setAuthRedirectPath = (
 export const checkAuthTimeout = (expirationTime: any) => {
   return (dispatch: Dispatch<Action>) => {
     setTimeout(() => {
-      dispatch(authLogout());
+      dispatch({
+        type: ActionType.AUTH_LOGOUT,
+      });
     }, expirationTime * 1000);
   };
 };
 
 export const auth = (email: string, password: string, isSignup: boolean) => {
   return async (dispatch: Dispatch<Action>) => {
-    dispatch(authStart());
+    dispatch({
+      type: ActionType.AUTH_START,
+    });
 
     const authData = {
       email: email,
@@ -79,57 +92,76 @@ export const auth = (email: string, password: string, isSignup: boolean) => {
       returnSecureToken: true,
     };
 
-    let url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup`;
+    let url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
 
-    if (!isSignup) {
-      url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
+    if (isSignup) {
+      url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup`;
     }
 
-    // userId
-    // email
-    // role
-    // token
+    try {
+      const { data }: { data: AuthResponse } = await axios.post(url, authData);
 
-    // eslint-disable-next-line
-    const { data }: { data: any } = await axios.post(url, authData);
+      const expirationDate = new Date(
+        new Date().getTime() + 3 * 60 * 60 * 1000
+      );
 
-    // axios
-    //   .post(url, authData)
-    //   .then((res) => {
-    //     const expirationDate = new Date(new Date().getTime() + 3 * 60 * 60 * 1000);
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('userId', data.data.userId);
+      localStorage.setItem('expirationDate', expirationDate.toISOString());
 
-    //      // Check res data structure
-    //     localStorage.setItem('token', res.data.idToken);
-    //     localStorage.setItem('expirationDate', expirationDate);
-    //     localStorage.setItem('userId', res.data.localId);
-
-    //     dispatch(authSuccess(res.data.idToken, res.data.localId));
-    //     dispatch(checkAuthTimeout(res.data.expiresIn));
-    //   })
-    //   .catch((err) => {
-    //     dispatch(authFail(err.response.data.error));
-    //   });
+      dispatch({
+        type: ActionType.AUTH_SUCCESS,
+        payload: {
+          idToken: data.data.token,
+          userId: data.data.userId,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ActionType.AUTH_FAIL,
+        payload: {
+          error: err.message,
+        },
+      });
+    }
   };
 };
 
-// export const authCheckState = () => {
-//   return (dispatch: Dispatch<Action>) => {
-//     const token = localStorage.getItem('token');
-//     if (!token) {
-//       dispatch(authLogout());
-//     } else {
-//       const expirationDate = new Date(localStorage.getItem('expirationDate'));
-//       if (expirationDate <= new Date()) {
-//         dispatch(authLogout());
-//       } else {
-//         const userId = localStorage.getItem('userId');
-//         dispatch(authSuccess(token, userId));
-//         dispatch(
-//           checkAuthTimeout(
-//             (expirationDate.getTime() - new Date().getTime()) / 1000
-//           )
-//         );
-//       }
-//     }
-//   };
-// };
+export const authCheckState = () => {
+  return (dispatch: Dispatch<Action>) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      dispatch({
+        type: ActionType.AUTH_LOGOUT,
+      });
+    } else {
+      const expirationDate = new Date(
+        localStorage.getItem('expirationDate') as string
+      );
+
+      if (expirationDate <= new Date()) {
+        dispatch({
+          type: ActionType.AUTH_LOGOUT,
+        });
+      } else {
+        const userId = localStorage.getItem('userId') as string;
+
+        dispatch({
+          type: ActionType.AUTH_SUCCESS,
+          payload: {
+            idToken: token,
+            userId,
+          },
+        });
+
+        dispatch({
+          type: ActionType.CHECK_AUTH_TIMEOUT,
+          payload: {
+            expirationTime: ((expirationDate.getTime() - new Date().getTime()) /
+              1000) as any,
+          },
+        });
+      }
+    }
+  };
+};

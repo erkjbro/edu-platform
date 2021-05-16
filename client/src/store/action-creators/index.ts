@@ -1,6 +1,1 @@
-export {
-  // auth,
-  // authCheckState,
-  authLogout,
-  setAuthRedirectPath,
-} from './auth';
+export { auth, authCheckState, authLogout, setAuthRedirectPath } from './auth';

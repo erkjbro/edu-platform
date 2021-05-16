@@ -23,6 +23,13 @@ export interface AuthLogoutAction {
   type: ActionType.AUTH_LOGOUT;
 }
 
+export interface CheckAuthTimeoutAction {
+  type: ActionType.CHECK_AUTH_TIMEOUT;
+  payload: {
+    expirationTime: Date;
+  };
+}
+
 export interface SetAuthRedirectPathAction {
   type: ActionType.SET_AUTH_REDIRECT_PATH;
   payload: {
@@ -35,4 +42,5 @@ export type Action =
   | AuthSuccessAction
   | AuthFailAction
   | AuthLogoutAction
+  | CheckAuthTimeoutAction
   | SetAuthRedirectPathAction;
