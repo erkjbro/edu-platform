@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 import { useActions } from '../../hooks/use-actions';
-// import { useTypedSelector as useSelector } from '../../hooks/use-typed-selector';
-import { Card } from '../ui-kit';
+import { useTypedSelector as useSelector } from '../../hooks/use-typed-selector';
+import { Button, Card } from '../ui-kit';
 import './auth.scss';
 
 const initialFormState = {
@@ -20,8 +20,7 @@ const initialFormState = {
 const Auth = () => {
   const [form, setForm] = useState(initialFormState);
   const [isSignupMode, setIsSignupMode] = useState(false);
-
-  const isLoading = false;
+  const { isLoading, error } = useSelector((state) => state.auth);
 
   const actions = useActions();
 
@@ -47,8 +46,8 @@ const Auth = () => {
 
   return (
     <>
-      {/* {error && <h1>Error</h1>} */}
-      {/* {isLoading && <h1>Loading</h1>} */}
+      {error && <h1 style={{ color: 'red' }}>Error: {error}</h1>}
+      {isLoading && <h1>Loading</h1>}
       {!isLoading && (
         <Card className='auth'>
           <h2>Authentication</h2>
@@ -107,14 +106,18 @@ const Auth = () => {
                   }
                 />
               </label>
-              <button type='submit' className='form__submit--btn'>
+              <Button type='submit' className='form__submit--btn'>
                 {isSignupMode ? 'SIGNUP' : 'LOGIN'}
-              </button>
+              </Button>
             </form>
           </div>
-          <button onClick={handleAuthToggle} className='auth__toggle--btn'>
+          <Button
+            inverse
+            onClick={handleAuthToggle}
+            className='auth__toggle--btn'
+          >
             SWITCH TO {!isSignupMode ? 'SIGNUP' : 'LOGIN'}
-          </button>
+          </Button>
         </Card>
       )}
     </>

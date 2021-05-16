@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
+
 import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
 import { useActions } from '../../../hooks/use-actions';
+import { Button } from '../../ui-kit';
 
 import './navbar.scss';
 
@@ -14,7 +16,7 @@ const Navbar = () => {
     authLinks = (
       <>
         <li>
-          <button onClick={actions.authLogout}>LOGOUT</button>
+          <Button onClick={actions.authLogout}>LOGOUT</Button>
         </li>
       </>
     );
@@ -22,7 +24,7 @@ const Navbar = () => {
     authLinks = (
       <>
         <li>
-          <button onClick={actions.authLogout}>LOGOUT</button>
+          <Button onClick={actions.authLogout}>LOGOUT</Button>
         </li>
       </>
     );
