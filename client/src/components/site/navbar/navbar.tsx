@@ -43,20 +43,9 @@ const Navbar = () => {
   return (
     <nav className='navbar'>
       <NavLink to='/' className='navbar__brand'>
-        EDU Platform
+        EDU Brand
       </NavLink>
-      <ul>
-        <li>
-          <NavLink exact activeClassName={'active'} to='/'>
-            {token
-              ? userRole === 'admin'
-                ? 'Admin Console'
-                : 'Dashboard'
-              : 'Home'}
-          </NavLink>
-        </li>
-        {authLinks}
-      </ul>
+      <ul>{authLinks}</ul>
     </nav>
   );
 };
