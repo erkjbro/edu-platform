@@ -20,9 +20,9 @@ const AdminConsole = () => {
             <NavLink
               exact
               activeClassName='tab-active'
-              to={`${match.url}/students`}
+              to={`${match.url}/users`}
             >
-              Students
+              Users
             </NavLink>
           </li>
         </ul>
@@ -31,7 +31,7 @@ const AdminConsole = () => {
         <Route exact path={match.path}>
           <CourseTab />
         </Route>
-        <Route path={`${match.path}/students`}>
+        <Route path={`${match.path}/users`}>
           <UserTab />
         </Route>
       </Switch>
