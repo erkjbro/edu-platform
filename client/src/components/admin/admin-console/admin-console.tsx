@@ -1,6 +1,7 @@
 import { useRouteMatch, Route, Switch, NavLink } from 'react-router-dom';
 
-// import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
+import { CourseTab } from './course-tab/course-tab';
+import { UserTab } from './user-tab/user-tab';
 import './admin-console.scss';
 
 const AdminConsole = () => {
@@ -28,10 +29,10 @@ const AdminConsole = () => {
       </div>
       <Switch>
         <Route exact path={match.path}>
-          <p>Course List...</p>
+          <CourseTab />
         </Route>
         <Route path={`${match.path}/students`}>
-          <p>Student List...</p>
+          <UserTab />
         </Route>
       </Switch>
     </div>
