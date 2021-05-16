@@ -10,6 +10,9 @@ const Auth = lazy(() => import('./components/auth/auth'));
 const AdminConsole = lazy(
   () => import('./components/admin/admin-console/admin-console')
 );
+const CourseDetails = lazy(
+  () => import('./components/course/course-details/course-details')
+);
 const Dashboard = lazy(() => import('./components/student'));
 const EditCourse = lazy(
   () => import('./components/admin/edit-course/edit-course')
@@ -36,7 +39,17 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/admin' component={AdminConsole} />
-        <Route exact path='/course/new' component={EditCourse} />
+        <Route path='/course/:courseId' exact component={CourseDetails} />
+        <Route path='/course/new' exact component={EditCourse} />
+        <Route
+          path='/course/edit/:courseId'
+          exact
+          render={() => <EditCourse editMode />}
+        />
+        {/* User Details */}
+        {/* Create User */}
+        {/* Edit User */}
+        {/* Profile */}
         <Redirect to='/admin' />
       </Switch>
     );
