@@ -199,7 +199,19 @@ const Auth = () => {
                   }
                 />
               </label>
-              <Button disable type='submit' className='form__submit--btn'>
+              <Button
+                disabled={
+                  (isSignupMode &&
+                    (!form.role.value ||
+                      !form.firstName.value ||
+                      !form.lastName.value ||
+                      !form.email.value ||
+                      !form.password.value)) ||
+                  (!isSignupMode && (!form.email.value || !form.password.value))
+                }
+                type='submit'
+                className='form__submit--btn'
+              >
                 {isSignupMode ? 'SIGNUP' : 'LOGIN'}
               </Button>
             </form>
