@@ -39,4 +39,4 @@ const AdminConsole = () => {
   );
 };
 
-export { AdminConsole };
+export default AdminConsole;

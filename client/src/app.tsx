@@ -7,8 +7,13 @@ import { useActions } from './hooks/use-actions';
 import { useTypedSelector as useSelector } from './hooks/use-typed-selector';
 
 const Auth = lazy(() => import('./components/auth/auth'));
-const AdminConsole = lazy(() => import('./components/admin'));
+const AdminConsole = lazy(
+  () => import('./components/admin/admin-console/admin-console')
+);
 const Dashboard = lazy(() => import('./components/student'));
+const EditCourse = lazy(
+  () => import('./components/admin/edit-course/edit-course')
+);
 
 const App = () => {
   const { token, userRole } = useSelector((state) => state.auth);
@@ -31,6 +36,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/admin' component={AdminConsole} />
+        <Route exact path='/course/new' component={EditCourse} />
         <Redirect to='/admin' />
       </Switch>
     );
