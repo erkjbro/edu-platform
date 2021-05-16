@@ -1,5 +1,7 @@
 import { ActionType } from '../action-types';
 
+export type UserRole = 'student' | 'teacher' | 'admin';
+
 export interface AuthStartAction {
   type: ActionType.AUTH_START;
 }
@@ -9,6 +11,7 @@ export interface AuthSuccessAction {
   payload: {
     idToken: string;
     userId: string;
+    userRole: UserRole;
   };
 }
 

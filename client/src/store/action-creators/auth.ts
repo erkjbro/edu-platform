@@ -9,13 +9,14 @@ import {
   AuthLogoutAction,
   SetAuthRedirectPathAction,
   Action,
+  UserRole,
 } from '../actions';
 
 type AuthResponse = {
   message: string;
   data: {
     email: string;
-    role: 'student' | 'teacher' | 'admin';
+    role: UserRole;
     token: string;
     userId: string;
   };
@@ -29,13 +30,15 @@ export const authStart = (): AuthStartAction => {
 
 export const authSuccess = (
   token: string,
-  userId: string
+  userId: string,
+  userRole: UserRole
 ): AuthSuccessAction => {
   return {
     type: ActionType.AUTH_SUCCESS,
     payload: {
       idToken: token,
       userId: userId,
+      userRole,
     },
   };
 };
@@ -107,6 +110,7 @@ export const auth = (email: string, password: string, isSignup: boolean) => {
 
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('userId', data.data.userId);
+      localStorage.setItem('userRole', data.data.role);
       localStorage.setItem('expirationDate', expirationDate.toISOString());
 
       dispatch({
@@ -114,6 +118,7 @@ export const auth = (email: string, password: string, isSignup: boolean) => {
         payload: {
           idToken: data.data.token,
           userId: data.data.userId,
+          userRole: data.data.role,
         },
       });
     } catch (err) {
@@ -130,6 +135,7 @@ export const auth = (email: string, password: string, isSignup: boolean) => {
 export const authCheckState = () => {
   return (dispatch: Dispatch<Action>) => {
     const token = localStorage.getItem('token');
+
     if (!token) {
       dispatch({
         type: ActionType.AUTH_LOGOUT,
@@ -145,12 +151,14 @@ export const authCheckState = () => {
         });
       } else {
         const userId = localStorage.getItem('userId') as string;
+        const userRole = localStorage.getItem('userRole') as UserRole;
 
         dispatch({
           type: ActionType.AUTH_SUCCESS,
           payload: {
             idToken: token,
             userId,
+            userRole,
           },
         });
 

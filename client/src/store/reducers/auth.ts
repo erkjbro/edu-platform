@@ -6,6 +6,7 @@ import { Action } from '../actions';
 interface AuthState {
   token: string | null;
   userId: string | null;
+  userRole: 'student' | 'teacher' | 'admin' | null;
   error: string | null;
   loading: boolean;
   authRedirectPath: string;
@@ -14,6 +15,7 @@ interface AuthState {
 const initialState: AuthState = {
   token: null,
   userId: null,
+  userRole: null,
   error: null,
   loading: false,
   authRedirectPath: '/',
@@ -28,6 +30,7 @@ const authStart = produce((state, action): AuthState | void => {
 const authSuccess = produce((state, action): AuthState | void => {
   state.token = action.payload.idToken;
   state.userId = action.payload.userId;
+  state.userRole = action.payload.userRole;
   state.error = null;
   state.loading = false;
   return state;
@@ -42,6 +45,7 @@ const authFail = produce((state, action): AuthState | void => {
 const authLogout = produce((state, action): AuthState | void => {
   state.token = null;
   state.userId = null;
+  state.userRole = null;
   return state;
 });
 
