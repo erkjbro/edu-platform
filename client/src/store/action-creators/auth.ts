@@ -12,6 +12,15 @@ import {
   UserRole,
 } from '../actions';
 
+export type AuthBody = {
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole | '';
+  adminCode?: string;
+  email: string;
+  password: string;
+};
+
 type AuthResponse = {
   message: string;
   data: {
@@ -83,22 +92,28 @@ export const checkAuthTimeout = (expirationTime: any) => {
   };
 };
 
-export const auth = (email: string, password: string, isSignup: boolean) => {
+export const auth = (body: AuthBody, isSignup: boolean) => {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({
       type: ActionType.AUTH_START,
     });
 
-    const authData = {
-      email: email,
-      password: password,
-      returnSecureToken: true,
-    };
+    let authData = {
+      email: body.email,
+      password: body.password,
+    } as AuthBody;
 
     let url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
 
     if (isSignup) {
-      url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup`;
+      authData = {
+        ...authData,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        role: body.role,
+      } as AuthBody;
+
+      url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup/${body.adminCode}`;
     }
 
     try {

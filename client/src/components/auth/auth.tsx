@@ -2,11 +2,42 @@ import { useState, useEffect } from 'react';
 
 import { useActions } from '../../hooks/use-actions';
 import { useTypedSelector as useSelector } from '../../hooks/use-typed-selector';
+import { UserRole, AuthBody } from '../../store';
 import { Button, Card } from '../ui-kit';
 import './auth.scss';
 
-const initialFormState = {
-  name: {
+interface AuthFormState {
+  firstName: {
+    value: string;
+  };
+  lastName: {
+    value: string;
+  };
+  role: {
+    value?: UserRole;
+  };
+  adminCode: {
+    value: string;
+  };
+  email: {
+    value: string;
+  };
+  password: {
+    value: string;
+  };
+}
+
+const initialFormState: AuthFormState = {
+  firstName: {
+    value: '',
+  },
+  lastName: {
+    value: '',
+  },
+  role: {
+    value: undefined,
+  },
+  adminCode: {
     value: '',
   },
   email: {
@@ -32,14 +63,19 @@ const Auth = () => {
     let body = {
       email: form.email.value,
       password: form.password.value,
-      name: '',
-    };
+    } as AuthBody;
 
     if (isSignupMode) {
-      body.name = form.name.value;
+      body = {
+        ...body,
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        role: form.role.value,
+        adminCode: form.adminCode.value,
+      };
     }
 
-    actions.auth(body.email, body.password, isSignupMode);
+    actions.auth(body, isSignupMode);
   };
 
   const handleAuthToggle = () => setIsSignupMode((prevState) => !prevState);
@@ -54,23 +90,80 @@ const Auth = () => {
           <div className='auth__card'>
             <form className='auth__card--form' onSubmit={handleAuthSubmit}>
               {isSignupMode && (
-                <label>
-                  Name
-                  <input
-                    id='name'
-                    type='text'
-                    placeholder='Name'
-                    value={form.name.value}
-                    onChange={(event) =>
-                      setForm({
-                        ...form,
-                        name: {
-                          value: event.target.value,
-                        },
-                      })
-                    }
-                  />
-                </label>
+                <>
+                  <label>
+                    First Name
+                    <input
+                      id='firstName'
+                      type='text'
+                      placeholder='First Name'
+                      value={form.firstName.value}
+                      onChange={(event) =>
+                        setForm({
+                          ...form,
+                          firstName: {
+                            value: event.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </label>
+                  <label>
+                    Last Name
+                    <input
+                      id='lastName'
+                      type='text'
+                      placeholder='Last Name'
+                      value={form.lastName.value}
+                      onChange={(event) =>
+                        setForm({
+                          ...form,
+                          lastName: {
+                            value: event.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </label>
+                  <label>
+                    User Type
+                    <select
+                      id='userRole'
+                      value={form.role.value}
+                      onChange={(event) => {
+                        setForm({
+                          ...form,
+                          role: {
+                            value: event.target.value as UserRole,
+                          },
+                        });
+                      }}
+                    >
+                      <option value=''>---</option>
+                      <option value='student'>Student</option>
+                      <option value='admin'>Admin</option>
+                    </select>
+                  </label>
+                  {form.role.value === 'admin' && (
+                    <label>
+                      Admin Code
+                      <input
+                        id='adminCode'
+                        type='text'
+                        placeholder='Enter "424242" as the code...'
+                        value={form.adminCode.value}
+                        onChange={(event) =>
+                          setForm({
+                            ...form,
+                            adminCode: {
+                              value: event.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </label>
+                  )}
+                </>
               )}
               <label>
                 E-Mail
@@ -106,7 +199,7 @@ const Auth = () => {
                   }
                 />
               </label>
-              <Button type='submit' className='form__submit--btn'>
+              <Button disable type='submit' className='form__submit--btn'>
                 {isSignupMode ? 'SIGNUP' : 'LOGIN'}
               </Button>
             </form>

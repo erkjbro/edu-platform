@@ -1,12 +1,12 @@
 import produce from 'immer';
 
 import { ActionType } from '../action-types';
-import { Action } from '../actions';
+import { Action, UserRole } from '../actions';
 
 interface AuthState {
   token: string | null;
   userId: string | null;
-  userRole: 'student' | 'teacher' | 'admin' | null;
+  userRole: UserRole | null;
   error: string | null;
   loading: boolean;
   authRedirectPath: string;
