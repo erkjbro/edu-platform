@@ -1,8 +1,12 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
 import { Button, Card } from '../../ui-kit';
 import './edit-course.scss';
+
+const URL = process.env.REACT_APP_BACKEND_URL as string;
 
 interface EditCourseState {
   title: {
@@ -29,20 +33,45 @@ const initialFormState: EditCourseState = {
 };
 
 const EditCourse = ({ editMode }: { editMode: boolean }) => {
-  // eslint-disable-next-line
   const [course, setCourse] = useState(initialFormState);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { token } = useSelector((state) => state.auth);
 
   const history = useHistory();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('submitted!!!');
+    setIsLoading(true);
 
     console.log(course);
 
-    // history.push('/');
+    const courseData = {
+      title: course.title.value,
+      description: course.description.value,
+      skillLevel: course.skillLevel.value,
+    };
+
+    try {
+      const { data }: { data: any } = await axios.post(
+        `${URL}/course`,
+        courseData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(data.message);
+      setIsLoading(false);
+      history.push('/admin');
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
+      setError(err.message);
+    }
   };
 
   return (
