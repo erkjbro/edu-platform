@@ -30,8 +30,8 @@ const App = () => {
   } else if (token && userRole === 'admin') {
     routes = (
       <Switch>
-        <Route path='/' exact component={AdminConsole} />
-        <Redirect to='/' />
+        <Route path='/admin' component={AdminConsole} />
+        <Redirect to='/admin' />
       </Switch>
     );
   } else {

@@ -1,5 +1,33 @@
+@import 'styles/colors';
 @import 'styles/variables';
 
-.admin-console {
+.admin-console__layout {
   @extend .page__layout;
+
+  .console-tabs {
+    margin: 1rem 0;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 0.2rem;
+    }
+
+    li {
+      display: inline-block;
+    }
+
+    a {
+      text-decoration: none;
+      color: map-get($colors, font-color);
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-active {
+      border-bottom: 4px solid map-get($colors, primary);
+    }
+  }
 }
