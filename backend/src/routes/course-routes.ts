@@ -5,6 +5,8 @@ import { checkAuth } from '../middleware/check-auth.js';
 
 const router = express.Router();
 
+router.get('/', courseController.getCourses);
+
 router.use(checkAuth);
 
 router.post('/', courseController.postCourse);

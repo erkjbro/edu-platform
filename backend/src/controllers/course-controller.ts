@@ -7,6 +7,23 @@ import { User } from '../models/user.js';
 
 // PUBLIC
 // get courses
+export const getCourses = (async (req, res, next) => {
+  let courses;
+  try {
+    courses = await Course.find({});
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong; courses not found.',
+      500
+    );
+    return next(error);
+  }
+
+  res.json({
+    message: 'Fetched courses successfully!',
+    data: courses,
+  });
+}) as RequestHandler;
 
 // get courseById
 
