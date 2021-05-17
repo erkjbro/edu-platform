@@ -27,6 +27,31 @@ export const getCourses = (async (req, res, next) => {
 
 // get courseById
 
+export const getCourseById = (async (req, res, next) => {
+  const { courseId } = req.params;
+
+  let course;
+  try {
+    course = await Course.findById(courseId);
+
+    if (!course) {
+      const error = new HttpError(
+        'Could not find a course for the provided id.',
+        404
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong!', 500);
+    return next(error);
+  }
+
+  res.json({
+    message: 'Fetched course by id successfully!',
+    payload: course.toObject({ getters: true }),
+  });
+}) as RequestHandler;
+
 // ADMIN
 
 // get courseDetailsById - protected info like grades, students enrolled, etc.

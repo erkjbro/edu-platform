@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/', courseController.getCourses);
 
+router.get('/:courseId', courseController.getCourseById);
+
 router.use(checkAuth);
 
 router.post('/', courseController.postCourse);
