@@ -99,7 +99,7 @@ export const postCourse = (async (req: any, res, next) => {
 
   res.status(201).json({
     message: 'Created new course successfully!',
-    data: createdCourse,
+    payload: createdCourse,
   });
 }) as RequestHandler;
 

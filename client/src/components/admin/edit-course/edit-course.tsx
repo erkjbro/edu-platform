@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
 import { Button, Card } from '../../ui-kit';
 import './edit-course.scss';
 
-const URL = process.env.REACT_APP_BACKEND_URL as string;
+const API_URL = process.env.REACT_APP_BACKEND_URL as string;
 
 interface EditCourseState {
   title: {
@@ -40,12 +40,38 @@ const EditCourse = ({ editMode }: { editMode: boolean }) => {
   const { token } = useSelector((state) => state.auth);
 
   const history = useHistory();
+  const { courseId }: { courseId: any } = useParams();
+
+  useEffect(() => {
+    if (editMode && courseId) {
+      (async () => {
+        const { data }: { data: any } = await axios.get(
+          `${API_URL}/course/${courseId}`
+        );
+
+        if (data.payload) {
+          setCourse({
+            ...initialFormState,
+            title: {
+              value: data.payload.title,
+            },
+            description: {
+              value: data.payload.description,
+            },
+            skillLevel: {
+              value: data.payload.skillLevel,
+            },
+          });
+        } else {
+          setCourse({ ...initialFormState });
+        }
+      })();
+    }
+  }, [editMode, courseId]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-
-    console.log(course);
 
     const courseData = {
       title: course.title.value,
@@ -53,18 +79,28 @@ const EditCourse = ({ editMode }: { editMode: boolean }) => {
       skillLevel: course.skillLevel.value,
     };
 
+    let result: any;
+
     try {
-      const { data }: { data: any } = await axios.post(
-        `${URL}/course`,
-        courseData,
-        {
+      if (editMode && courseId) {
+        result = await axios.patch(
+          `${API_URL}/course/${courseId}`,
+          courseData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else {
+        result = await axios.post(`${API_URL}/course`, courseData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+        });
+      }
 
-      console.log(data.message);
+      console.log(result.data.message);
       setIsLoading(false);
       history.push('/admin');
     } catch (err) {
@@ -146,7 +182,7 @@ const EditCourse = ({ editMode }: { editMode: boolean }) => {
                 className='form__button'
                 type='submit'
               >
-                Create Course
+                {editMode ? 'Save Changes' : 'Create Course'}
               </Button>
             </form>
           </Card>
