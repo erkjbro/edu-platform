@@ -59,7 +59,7 @@ const UserTab = () => {
 
   return (
     <div className='user-tab'>
-      <Button>New User</Button>
+      <Button to='/user/new'>New User</Button>
       <label style={{ marginTop: '1rem' }}>
         User Role &nbsp;
         <select

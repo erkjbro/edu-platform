@@ -13,10 +13,14 @@ const AdminConsole = lazy(
 const CourseDetails = lazy(
   () => import('./components/course/course-details/course-details')
 );
+const UserDetails = lazy(
+  () => import('./components/user/user-details/user-details')
+);
 const Dashboard = lazy(() => import('./components/student'));
 const EditCourse = lazy(
   () => import('./components/admin/edit-course/edit-course')
 );
+const EditUser = lazy(() => import('./components/admin/edit-user/edit-user'));
 
 const App = () => {
   const { token, userRole } = useSelector((state) => state.auth);
@@ -46,9 +50,9 @@ const App = () => {
           render={() => <EditCourse editMode />}
         />
         <Route path='/course/:courseId' exact component={CourseDetails} />
-        {/* User Details */}
-        {/* Create User */}
+        <Route path='/user/new' exact component={EditUser} />
         {/* Edit User */}
+        <Route path='/user/:userId' exact component={UserDetails} />
         {/* Profile */}
         <Redirect to='/admin' />
       </Switch>
