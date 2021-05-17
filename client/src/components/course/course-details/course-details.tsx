@@ -74,14 +74,14 @@ const CourseDetails = () => {
       )}
       {isLoading && <h1>Loading...</h1>}
       {!isLoading && !error && course && (
-        <div>
+        <div style={{ width: '100vw', height: 'calc(100vh - 5rem)' }}>
           <h1>{course.title}</h1>
           <h5>
             {course.skillLevel[0].toLocaleUpperCase() +
               course.skillLevel.slice(1)}
           </h5>
           <p>{course.description}</p>
-          {token && userRole === 'admin' && (
+          {token && userRole === 'admin' ? (
             <span className='course__details--controls'>
               <Button
                 className='controls__button'
@@ -96,6 +96,17 @@ const CourseDetails = () => {
                 onClick={handleDeleteCourse}
               >
                 Delete Course
+              </Button>
+            </span>
+          ) : (
+            <span className='course__details--controls'>
+              <Button
+                className='controls__button'
+                inverse
+                style={{ width: 'max-content' }}
+                onClick={() => {}}
+              >
+                CLICK TO ENROLL
               </Button>
             </span>
           )}

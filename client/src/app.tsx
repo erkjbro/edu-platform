@@ -38,7 +38,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/' exact component={Dashboard} />
-        {/* Course Details */}
+        <Route path='/course/:courseId' exact component={CourseDetails} />
         {/* Profile */}
         <Redirect to='/' />
       </Switch>
