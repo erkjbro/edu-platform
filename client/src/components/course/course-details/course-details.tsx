@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
-
 import { Button } from '../../ui-kit';
 import './course-details.scss';
 
