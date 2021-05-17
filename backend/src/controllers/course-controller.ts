@@ -70,15 +70,21 @@ export const postCourse = (async (req: any, res, next) => {
     creator: userId,
   });
 
-  // try / catch
   let admin;
+  try {
+    admin = await User.findById(userId, '-password');
 
-  admin = await User.findById(userId, '-password');
-
-  if (!admin) {
-    throw new Error('no admin found');
+    if (!admin) {
+      const error = new HttpError('No user found for this id.', 404);
+      return next(error);
+    } else if (admin.role !== 'admin') {
+      const error = new HttpError('Only admins can create courses.', 403);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong', 500);
+    return next(error);
   }
-  // Check db user role for AuthZ
 
   try {
     // Create mongoose session and start transaction
@@ -147,7 +153,7 @@ export const patchCourse = (async (req: any, res, next) => {
   });
 }) as RequestHandler;
 
-// delete course - or just disable course to avoid data loss, etc.
+// delete course - Disabling would make more sense to avoid data loss for users.
 export const deleteCourse = (async (req: any, res, next) => {
   const { userId, role } = req.userData;
   const { courseId } = req.params;
