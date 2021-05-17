@@ -110,7 +110,7 @@ export const patchCourse = (async (req: any, res, next) => {
   const { courseId } = req.params;
 
   if (role !== 'admin') {
-    const error = new HttpError('You are not allowed to create courses', 403);
+    const error = new HttpError('You are not allowed to edit courses', 403);
     return next(error);
   }
 
@@ -148,3 +148,40 @@ export const patchCourse = (async (req: any, res, next) => {
 }) as RequestHandler;
 
 // delete course - or just disable course to avoid data loss, etc.
+export const deleteCourse = (async (req: any, res, next) => {
+  const { userId, role } = req.userData;
+  const { courseId } = req.params;
+
+  if (role !== 'admin') {
+    const error = new HttpError('You are not allowed to delete courses', 403);
+    return next(error);
+  }
+
+  let course;
+  let creator;
+  try {
+    course = await Course.findByIdAndRemove(courseId);
+
+    if (!course) {
+      const error = new HttpError(
+        'Could not find course with provided id.',
+        404
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong', 500);
+    return next(error);
+  }
+
+  // try {
+
+  // } catch (err) {
+  //   const error = new HttpError('Something went wrong!', 500);
+  //   return next(error);
+  // }
+
+  res.json({
+    message: 'Course deleted successfully!',
+  });
+}) as RequestHandler;

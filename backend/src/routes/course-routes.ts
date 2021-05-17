@@ -15,4 +15,6 @@ router.post('/', courseController.postCourse);
 
 router.patch('/:courseId', courseController.patchCourse);
 
+router.delete('/:courseId', courseController.deleteCourse);
+
 export { router as courseRoutes };
