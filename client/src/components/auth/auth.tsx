@@ -51,6 +51,7 @@ const initialFormState: AuthFormState = {
 const Auth = () => {
   const [form, setForm] = useState(initialFormState);
   const [isSignupMode, setIsSignupMode] = useState(false);
+
   const { isLoading, error } = useSelector((state) => state.auth);
 
   const actions = useActions();
@@ -82,8 +83,8 @@ const Auth = () => {
 
   return (
     <>
-      {error && <h1 style={{ color: 'red' }}>Error: {error}</h1>}
-      {isLoading && <h1>Loading</h1>}
+      {error && <h1 style={{ color: 'red' }}>{error}</h1>}
+      {isLoading && <h1>Redirecting...</h1>}
       {!isLoading && (
         <Card className='auth'>
           <h2>Authentication</h2>

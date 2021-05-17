@@ -8,7 +8,7 @@ interface AuthState {
   userId: string | null;
   userRole: UserRole | null;
   error: string | null;
-  loading: boolean;
+  isLoading: boolean;
   authRedirectPath: string;
 }
 
@@ -17,13 +17,13 @@ const initialState: AuthState = {
   userId: null,
   userRole: null,
   error: null,
-  loading: false,
+  isLoading: false,
   authRedirectPath: '/',
 };
 
 const authStart = produce((state, action): AuthState | void => {
   state.error = null;
-  state.loading = true;
+  state.isLoading = true;
   return state;
 });
 
@@ -32,13 +32,13 @@ const authSuccess = produce((state, action): AuthState | void => {
   state.userId = action.payload.userId;
   state.userRole = action.payload.userRole;
   state.error = null;
-  state.loading = false;
+  state.isLoading = false;
   return state;
 });
 
 const authFail = produce((state, action): AuthState | void => {
   state.error = action.payload.error;
-  state.loading = false;
+  state.isLoading = false;
   return state;
 });
 
