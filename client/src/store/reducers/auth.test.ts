@@ -12,6 +12,7 @@ describe('auth reducer', () => {
       token: null,
       userId: null,
       error: null,
+      userRole: null,
       loading: false,
       authRedirectPath: '/',
     });
@@ -24,6 +25,7 @@ describe('auth reducer', () => {
           token: null,
           userId: null,
           error: null,
+          userRole: 'student',
           loading: false,
           authRedirectPath: '/',
         },
@@ -32,12 +34,14 @@ describe('auth reducer', () => {
           payload: {
             idToken: 'some-token',
             userId: 'some-user-id',
+            userRole: 'student',
           },
         }
       )
     ).toEqual({
       token: 'some-token',
       userId: 'some-user-id',
+      userRole: 'student',
       error: null,
       loading: false,
       authRedirectPath: '/',
