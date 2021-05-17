@@ -20,7 +20,7 @@ export const getCourses = (async (req, res, next) => {
 
   res.json({
     message: 'Fetched courses successfully!',
-    data: courses,
+    payload: courses,
   });
 }) as RequestHandler;
 

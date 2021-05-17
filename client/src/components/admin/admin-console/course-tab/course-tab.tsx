@@ -5,7 +5,7 @@ import CourseList from '../../../course/course-list/course-list';
 import { Button } from '../../../ui-kit';
 import './course-tab.scss';
 
-const URL = process.env.REACT_APP_BACKEND_URL as string;
+const API_URL = process.env.REACT_APP_BACKEND_URL as string;
 
 const CourseTab = () => {
   const [courses, setCourses] = useState([]);
@@ -15,13 +15,12 @@ const CourseTab = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data }: { data: any } = await axios.get(`${URL}/course`);
+        const { data }: { data: any } = await axios.get(`${API_URL}/course`);
 
-        if (data.data) {
-          setCourses(data.data);
+        if (data.payload) {
+          setCourses(data.payload);
         }
       } catch (err) {
-        console.error(err.message);
         setError(err.message);
       } finally {
         setIsLoading(false);
