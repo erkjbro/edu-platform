@@ -2,14 +2,21 @@ import { RequestHandler } from 'express';
 import HttpError from '../models/http-error.js';
 
 import { User, UserRole } from '../models/user.js';
-import { CourseDoc } from '../models/course.js';
 
-// find users [filter / pagination] w/o admins
 export const getUsers = (async (req, res, next) => {
   let users;
 
-  // try / catch
-  users = await User.find({ role: { $ne: 'admin' } }, '-password');
+  try {
+    users = await User.find({ role: { $ne: 'admin' } }, '-password');
+
+    if (!users) {
+      const error = new HttpError('Users not found', 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong.', 500);
+    return next(error);
+  }
 
   res.json({
     message: 'Fetched users successfully!',
