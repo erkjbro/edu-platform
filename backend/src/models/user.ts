@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import { CourseDoc } from './course.js';
 
-type UserRole = 'student' | 'teacher' | 'admin';
+export type UserRole = 'student' | 'teacher' | 'admin';
 
 // An interface that describes the properties
 // that are required to create a new User.

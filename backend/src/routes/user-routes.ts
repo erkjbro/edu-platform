@@ -6,16 +6,12 @@ const router = express.Router();
 
 router.get('/', userController.getUsers);
 
-router.get('/students', userController.getStudents);
+router.get('/role/:userRole', userController.getUsersByRole);
 
 router.get('/:userId', userController.getUserById);
 
-router.patch('/:userId', (req, res, next) => console.log('update user'));
+// router.patch('/:userId', (req, res, next) => console.log('update user'));
 
-router.delete('/:userId', (req, res, next) => console.log('delete user'));
-
-router.get('/courses/:userId', (req, res, next) => res.json('user courses'));
-
-router.get('/', (req, res, next) => {});
+// router.delete('/:userId', (req, res, next) => console.log('delete user'));
 
 export { router as userRoutes };

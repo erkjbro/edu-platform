@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import HttpError from '../models/http-error.js';
 
-import { User } from '../models/user.js';
+import { User, UserRole } from '../models/user.js';
 import { CourseDoc } from '../models/course.js';
 
 // find users [filter / pagination] w/o admins
@@ -13,20 +13,37 @@ export const getUsers = (async (req, res, next) => {
 
   res.json({
     message: 'Fetched users successfully!',
-    data: users,
+    payload: users,
   });
 }) as RequestHandler;
 
-// find students
-export const getStudents = (async (req, res, next) => {
-  let students;
+// find users by role
+export const getUsersByRole = (async (req, res, next) => {
+  let { userRole } = req.params;
 
-  // try / catch
-  students = await User.find({ role: { $eq: 'student' } }, '-password');
+  if (!userRole) {
+    userRole = 'student';
+  }
+
+  let users;
+  try {
+    users = await User.find(
+      { role: { $eq: `${userRole}` as UserRole } },
+      '-password'
+    );
+
+    if (!users) {
+      const error = new HttpError('No users were found with this role.', 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong!', 500);
+    return next(error);
+  }
 
   res.json({
     message: 'Fetched students successfully!',
-    data: students,
+    payload: users,
   });
 }) as RequestHandler;
 
@@ -46,48 +63,14 @@ export const getUserById = (async (req, res, next) => {
     return next(error);
   }
 
-  // Who has AuthZ to fetch users by id?
+  // AuthZ only to admins and users having that ID.
 
   res.json({
     message: 'Found user successfully!',
-    data: user.toObject({ getters: true }),
+    payload: user.toObject({ getters: true }),
   });
 }) as RequestHandler;
 
-// find user courses?
-// Seems like a route for the course controller since we're focused on courses in which user has enrolled
-// export const getUserCourses = (async (req, res, next) => {
-//   const { userId } = req.params;
-
-//   let user;
-//   try {
-//     user = await User.findById(userId, '-password').populate('courses');
-
-//     if (!user) {
-//       const error = new HttpError('Could not find user by specified id.', 404);
-//       return next(error);
-//     }
-//   } catch (err) {
-//     const error = new HttpError('Something went wrong.', 500);
-//     return next(error);
-//   }
-
-//   console.log(user);
-
-//   // user exists?
-
-//   // authZ?
-
-//   res.json({
-//     message: "Fetched user's enrolled courses successfully!",
-//     data: user.courses.map((course: CourseDoc) =>
-//       course.toObject({ getters: true })
-//     ),
-//   });
-// }) as RequestHandler;
-
-// patch user (profile)
-
-// patch user (course signup)
+// patch user
 
 // delete user
