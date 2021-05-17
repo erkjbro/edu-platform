@@ -23,7 +23,7 @@ export type AuthBody = {
 
 type AuthResponse = {
   message: string;
-  data: {
+  payload: {
     email: string;
     role: UserRole;
     token: string;
@@ -103,7 +103,7 @@ export const auth = (body: AuthBody, isSignup: boolean) => {
       password: body.password,
     } as AuthBody;
 
-    let url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
+    let api_url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
 
     if (isSignup) {
       authData = {
@@ -113,27 +113,30 @@ export const auth = (body: AuthBody, isSignup: boolean) => {
         role: body.role,
       } as AuthBody;
 
-      url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup/${body.adminCode}`;
+      api_url = `${process.env.REACT_APP_BACKEND_URL}/auth/signup/${body.adminCode}`;
     }
 
     try {
-      const { data }: { data: AuthResponse } = await axios.post(url, authData);
+      const { data }: { data: AuthResponse } = await axios.post(
+        api_url,
+        authData
+      );
 
       const expirationDate = new Date(
         new Date().getTime() + 3 * 60 * 60 * 1000
       );
 
-      localStorage.setItem('token', data.data.token);
-      localStorage.setItem('userId', data.data.userId);
-      localStorage.setItem('userRole', data.data.role);
+      localStorage.setItem('token', data.payload.token);
+      localStorage.setItem('userId', data.payload.userId);
+      localStorage.setItem('userRole', data.payload.role);
       localStorage.setItem('expirationDate', expirationDate.toISOString());
 
       dispatch({
         type: ActionType.AUTH_SUCCESS,
         payload: {
-          idToken: data.data.token,
-          userId: data.data.userId,
-          userRole: data.data.role,
+          idToken: data.payload.token,
+          userId: data.payload.userId,
+          userRole: data.payload.role,
         },
       });
     } catch (err) {

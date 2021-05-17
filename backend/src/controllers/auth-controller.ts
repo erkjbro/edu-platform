@@ -89,7 +89,7 @@ export const postSignup = (async (req, res, next) => {
   // respond w/ 201 & userId, userType, email, token
   res.status(201).json({
     message: 'Signup completed successfully!',
-    data: {
+    payload: {
       userId: createdUser.id,
       email: createdUser.email,
       role: createdUser.role,
@@ -157,7 +157,7 @@ export const postLogin = (async (req, res, next) => {
   // respond w/ userId, userType, email, token
   res.json({
     message: 'Login completed successfully!',
-    data: {
+    payload: {
       userId: existingUser.id,
       email: existingUser.email,
       role: existingUser.role,

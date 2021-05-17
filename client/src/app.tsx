@@ -16,7 +16,9 @@ const CourseDetails = lazy(
 const UserDetails = lazy(
   () => import('./components/user/user-details/user-details')
 );
-const Dashboard = lazy(() => import('./components/student'));
+const Dashboard = lazy(
+  () => import('./components/student/dashboard/dashboard')
+);
 const EditCourse = lazy(
   () => import('./components/admin/edit-course/edit-course')
 );
