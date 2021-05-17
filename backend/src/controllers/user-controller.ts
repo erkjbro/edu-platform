@@ -61,18 +61,20 @@ export const getUserById = (async (req, res, next) => {
   const { userId } = req.params;
 
   let user;
-  // try / catch
-  user = await User.findById(userId, '-password');
+  try {
+    user = await User.findById(userId, '-password');
 
-  if (!user) {
-    const error = new HttpError(
-      'User could not be found with the provided id.',
-      404
-    );
+    if (!user) {
+      const error = new HttpError(
+        'User could not be found with the provided id.',
+        404
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong', 500);
     return next(error);
   }
-
-  // AuthZ only to admins and users having that ID.
 
   res.json({
     message: 'Found user successfully!',
