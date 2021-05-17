@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// import UserList from '../../../'
+import UserList from '../../../user/user-list/user-list';
 import { Button } from '../../../ui-kit';
 import './user-tab.scss';
 
@@ -19,7 +19,7 @@ const UserTab = () => {
         const { data }: { data: any } = await axios.get(`${API_URL}/user`);
 
         if (data.payload) {
-          console.log(data.payload);
+          setUsers(data.payload);
         }
       } catch (err) {
         setError(err.message);
@@ -46,9 +46,7 @@ const UserTab = () => {
       </label> */}
       {error && <h1 onClick={() => setError('')}>{error}</h1>}
       {isLoading && <h1>Loading...</h1>}
-      {!isLoading && !error && (
-        <div style={{ margin: '1rem 0' }}>User List...</div>
-      )}
+      {!isLoading && !error && <UserList users={users} />}
     </div>
   );
 };
