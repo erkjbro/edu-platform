@@ -158,9 +158,13 @@ export const deleteCourse = (async (req: any, res, next) => {
   }
 
   let course;
-  let creator;
   try {
-    course = await Course.findByIdAndRemove(courseId);
+    course = await Course.findById(courseId);
+
+    // Normally I'd populate the creator field, but it was returning null so
+    // I came up with another solution to circumvent the issue and save time.
+
+    // course = await Course.findById(courseId).populate('creator');
 
     if (!course) {
       const error = new HttpError(
@@ -174,12 +178,30 @@ export const deleteCourse = (async (req: any, res, next) => {
     return next(error);
   }
 
-  // try {
+  let creator;
+  try {
+    creator = await User.findById(course.creator);
+  } catch (err) {
+    const error = new HttpError('Something went wrong!', 500);
+    return next(error);
+  }
 
-  // } catch (err) {
-  //   const error = new HttpError('Something went wrong!', 500);
-  //   return next(error);
-  // }
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    await course.remove({ session });
+
+    if (creator) {
+      creator.courses.pull(course);
+      await creator.save({ session });
+    }
+
+    await session.commitTransaction();
+  } catch (err) {
+    const error = new HttpError('Something went wrong!', 500);
+    return next(error);
+  }
 
   res.json({
     message: 'Course deleted successfully!',

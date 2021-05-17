@@ -8,6 +8,7 @@ interface CourseAttrs {
 }
 
 export interface CourseDoc extends mongoose.Document {
+  pull(course: CourseDoc): any;
   push(createdCourse: CourseDoc): any;
   title: string;
   creator: UserDoc['_id'];
