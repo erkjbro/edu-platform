@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
@@ -24,6 +24,7 @@ const CourseDetails = () => {
 
   const { token, userRole } = useSelector((state) => state.auth);
 
+  const history = useHistory();
   const { courseId }: { courseId: any } = useParams();
 
   useEffect(() => {
@@ -43,6 +44,27 @@ const CourseDetails = () => {
       }
     })();
   }, [courseId]);
+
+  const handleDeleteCourse = async () => {
+    setIsLoading(true);
+    try {
+      const { data }: { data: any } = await axios.delete(
+        `${API_URL}/course/${courseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setIsLoading(false);
+      console.log(data.message);
+      history.push('/admin');
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message);
+    }
+  };
 
   return (
     <div className='course__details'>
@@ -72,7 +94,7 @@ const CourseDetails = () => {
               <Button
                 className='controls__button'
                 danger
-                onClick={() => console.log('course deleted!')}
+                onClick={handleDeleteCourse}
               >
                 Delete Course
               </Button>
