@@ -34,7 +34,11 @@ const CourseTab = () => {
   return (
     <div className='course-tab'>
       {role === 'admin' && <Button to='/course/new'>New Course</Button>}
-      {error && <h1 onClick={() => setError('')}>{error}</h1>}
+      {error && (
+        <h1 style={{ color: 'red' }} onClick={() => setError('')}>
+          {error}
+        </h1>
+      )}
       {isLoading && <h1>Loading...</h1>}
       {!isLoading && !error && <CourseList courses={courses} />}
     </div>

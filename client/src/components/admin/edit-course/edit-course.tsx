@@ -34,7 +34,7 @@ const initialFormState: EditCourseState = {
 
 const EditCourse = ({ editMode }: { editMode: boolean }) => {
   const [course, setCourse] = useState(initialFormState);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { token } = useSelector((state) => state.auth);
@@ -105,16 +105,19 @@ const EditCourse = ({ editMode }: { editMode: boolean }) => {
       history.push('/admin');
     } catch (err) {
       setIsLoading(false);
-      console.error(err);
       setError(err.message);
     }
   };
 
   return (
     <>
-      {error && <div>Error...</div>}
-      {isLoading && <div>Loading...</div>}
-      {!isLoading && (
+      {error && (
+        <h1 style={{ color: 'red' }} onClick={() => setError('')}>
+          {error}
+        </h1>
+      )}
+      {isLoading && <h1>Loading...</h1>}
+      {!error && !isLoading && (
         <div className='edit__course'>
           {!editMode ? <h1>Create a Course!</h1> : <h1>Edit Course!</h1>}
           <Card className='edit__course--card'>

@@ -47,7 +47,7 @@ const initialFormState: UserFormState = {
 
 const EditUser = () => {
   const [user, setUser] = useState(initialFormState);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { token } = useSelector((state) => state.auth);
@@ -88,8 +88,12 @@ const EditUser = () => {
 
   return (
     <>
-      {error && <div>Error...</div>}
-      {isLoading && <div>Loading...</div>}
+      {error && (
+        <h1 style={{ color: 'red' }} onClick={() => setError('')}>
+          {error}
+        </h1>
+      )}
+      {isLoading && <h1>Loading...</h1>}
       {!isLoading && !error && (
         <div className='edit__user'>
           <h1>Add a New User</h1>

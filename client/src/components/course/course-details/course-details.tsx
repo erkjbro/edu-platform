@@ -104,7 +104,7 @@ const CourseDetails = () => {
                 className='controls__button'
                 inverse
                 style={{ width: 'max-content' }}
-                onClick={() => {}}
+                onClick={() => console.log('Enrolled in course!')}
               >
                 CLICK TO ENROLL
               </Button>
