@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { Request, RequestHandler } from 'express';
 import mongoose from 'mongoose';
 
 import HttpError from '../models/http-error.js';
@@ -6,7 +6,6 @@ import { Course, CourseDoc } from '../models/course.js';
 import { User } from '../models/user.js';
 
 // PUBLIC
-// get courses
 export const getCourses = (async (req, res, next) => {
   let courses;
   try {
@@ -24,8 +23,6 @@ export const getCourses = (async (req, res, next) => {
     data: courses,
   });
 }) as RequestHandler;
-
-// get courseById
 
 export const getCourseById = (async (req, res, next) => {
   const { courseId } = req.params;
@@ -107,7 +104,47 @@ export const postCourse = (async (req: any, res, next) => {
 }) as RequestHandler;
 
 // patch course content
+export const patchCourse = (async (req: any, res, next) => {
+  const { title, description, skillLevel }: CourseDoc = req.body;
+  const { userId, role } = req.userData;
+  const { courseId } = req.params;
 
-// patch course (add user)
+  if (role !== 'admin') {
+    const error = new HttpError('You are not allowed to create courses', 403);
+    return next(error);
+  }
+
+  let course;
+  try {
+    course = await Course.findById(courseId);
+
+    if (!course) {
+      const error = new HttpError(
+        'Could not find course with provided id.',
+        404
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong', 500);
+    return next(error);
+  }
+
+  course.title = title;
+  course.description = description;
+  course.skillLevel = skillLevel;
+
+  try {
+    await course.save();
+  } catch (err) {
+    const error = new HttpError('Something went wrong!', 500);
+    return next(error);
+  }
+
+  res.json({
+    message: 'Course updated successfully!',
+    payload: course.toObject({ getters: true }),
+  });
+}) as RequestHandler;
 
 // delete course - or just disable course to avoid data loss, etc.

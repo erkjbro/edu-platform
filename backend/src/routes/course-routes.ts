@@ -13,4 +13,6 @@ router.use(checkAuth);
 
 router.post('/', courseController.postCourse);
 
+router.patch('/:courseId', courseController.patchCourse);
+
 export { router as courseRoutes };
