@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
 import { CourseList } from '../course-list/course-list';
 import { Button } from '../../ui-kit';
 import './course-tab.scss';
@@ -11,6 +12,8 @@ const CourseTab = () => {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -30,7 +33,7 @@ const CourseTab = () => {
 
   return (
     <div className='course-tab'>
-      <Button to='/course/new'>New Course</Button>
+      {role === 'admin' && <Button to='/course/new'>New Course</Button>}
       {error && <h1 onClick={() => setError('')}>{error}</h1>}
       {isLoading && <h1>Loading...</h1>}
       {!isLoading && !error && <CourseList courses={courses} />}
