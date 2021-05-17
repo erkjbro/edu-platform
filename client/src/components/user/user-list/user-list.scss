@@ -1,0 +1,12 @@
+.user__list {
+  margin: 0;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  li {
+    list-style: none;
+  }
+}
