@@ -1,7 +1,8 @@
+import bcrypt from 'bcryptjs';
 import { RequestHandler } from 'express';
-import HttpError from '../models/http-error.js';
 
-import { User, UserRole } from '../models/user.js';
+import HttpError from '../models/http-error.js';
+import { User, UserDoc, UserRole } from '../models/user.js';
 
 export const getUsers = (async (req, res, next) => {
   let users;
@@ -79,6 +80,67 @@ export const getUserById = (async (req, res, next) => {
   res.json({
     message: 'Found user successfully!',
     payload: user.toObject({ getters: true }),
+  });
+}) as RequestHandler;
+
+export const postUser = (async (req: any, res, next) => {
+  // Validation Check... ?
+
+  // Extract data from body
+  const { firstName, lastName, email, password, role }: UserDoc = req.body;
+
+  const userRole = req.userData.role; // avoiding a naming conflict
+
+  if (userRole !== 'admin') {
+    const error = new HttpError('You are not allowed to create courses', 403);
+    return next(error);
+  }
+
+  // Check if user exists already
+  try {
+    const existingUser = await User.findOne({ email });
+
+    // Compare - User already exists - 422
+    if (existingUser) {
+      const error = new HttpError('User exists already.', 422);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError('Something went wrong.', 500);
+    return next(error);
+  }
+
+  // hash password
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    const error = new HttpError('Signup failed; please try again.', 500);
+    return next(error);
+  }
+
+  // create user
+  const createdUser = new User({
+    firstName,
+    lastName,
+    role,
+    email,
+    password: hashedPassword,
+    courses: [],
+  });
+
+  // save to db
+  try {
+    await createdUser.save();
+  } catch (err) {
+    const error = new HttpError('Something went wrong.', 500);
+    return next(error);
+  }
+
+  // respond w/ 201 & userId, userType, email, token
+  res.status(201).json({
+    message: 'Signup completed successfully!',
+    payload: createdUser,
   });
 }) as RequestHandler;
 
