@@ -9,7 +9,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL as string;
 
 const UserTab = () => {
   const [users, setUsers] = useState([]);
-  // const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,21 +29,50 @@ const UserTab = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      if (userRole) {
+        try {
+          setIsLoading(true);
+
+          const { data }: { data: any } = await axios.get(
+            `${API_URL}/user/role/${userRole}`
+          );
+
+          if (data.payload) {
+            setUsers(data.payload);
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    })();
+  }, [userRole]);
+
+  const handleRoleChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setUserRole(event.target.value);
+  };
+
   return (
     <div className='user-tab'>
       <Button>New User</Button>
-      {/* <label>
-        User Role
+      <label style={{ marginTop: '1rem' }}>
+        User Role &nbsp;
         <select
           id='userRole'
+          disabled={isLoading}
           value={userRole}
-          onChange={(event) => setUserRole(event.target.value)}
+          onChange={handleRoleChange}
         >
           <option value=''>---</option>
           <option value='student'>Student</option>
           <option value='admin'>Admin</option>
         </select>
-      </label> */}
+      </label>
       {error && <h1 onClick={() => setError('')}>{error}</h1>}
       {isLoading && <h1>Loading...</h1>}
       {!isLoading && !error && <UserList users={users} />}

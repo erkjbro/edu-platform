@@ -32,6 +32,8 @@ export const getUsersByRole = (async (req, res, next) => {
       '-password'
     );
 
+    console.log(users);
+
     if (!users) {
       const error = new HttpError('No users were found with this role.', 404);
       return next(error);
@@ -43,7 +45,7 @@ export const getUsersByRole = (async (req, res, next) => {
 
   res.json({
     message: 'Fetched students successfully!',
-    payload: users,
+    payload: users.map((user) => user.toObject({ getters: true })),
   });
 }) as RequestHandler;
 
