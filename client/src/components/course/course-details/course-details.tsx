@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-// import { Button } from '../../ui-kit';
+import { useTypedSelector as useSelector } from '../../../hooks/use-typed-selector';
+
+import { Button } from '../../ui-kit';
 import './course-details.scss';
 
 type CourseObj = {
@@ -20,6 +22,8 @@ const CourseDetails = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const { token, userRole } = useSelector((state) => state.auth);
+
   const { courseId }: { courseId: any } = useParams();
 
   useEffect(() => {
@@ -31,10 +35,8 @@ const CourseDetails = () => {
 
         if (data.payload) {
           setCourse(data.payload);
-          console.log(data.payload);
         }
       } catch (err) {
-        console.error(err.message);
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -53,8 +55,29 @@ const CourseDetails = () => {
       {!isLoading && !error && course && (
         <div>
           <h1>{course.title}</h1>
-          <h5>{course.skillLevel}</h5>
+          <h5>
+            {course.skillLevel[0].toLocaleUpperCase() +
+              course.skillLevel.slice(1)}
+          </h5>
           <p>{course.description}</p>
+          {token && userRole === 'admin' && (
+            <span className='course__details--controls'>
+              <Button
+                className='controls__button'
+                inverse
+                to={`/course/edit/${courseId}`}
+              >
+                Edit Course
+              </Button>
+              <Button
+                className='controls__button'
+                danger
+                onClick={() => console.log('course deleted!')}
+              >
+                Delete Course
+              </Button>
+            </span>
+          )}
         </div>
       )}
     </div>
