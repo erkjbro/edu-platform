@@ -1,8 +1,8 @@
 import { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Navbar from './components/site/navbar/navbar';
 import Landing from './components/site/landing/landing';
+import { Navbar } from './components/site/navbar/navbar';
 import { useActions } from './hooks/use-actions';
 import { useTypedSelector as useSelector } from './hooks/use-typed-selector';
 
@@ -38,6 +38,8 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/' exact component={Dashboard} />
+        {/* Course Details */}
+        {/* Profile */}
         <Redirect to='/' />
       </Switch>
     );

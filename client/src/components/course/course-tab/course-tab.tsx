@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import CourseList from '../../../course/course-list/course-list';
-import { Button } from '../../../ui-kit';
+import { CourseList } from '../course-list/course-list';
+import { Button } from '../../ui-kit';
 import './course-tab.scss';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL as string;
@@ -38,4 +38,4 @@ const CourseTab = () => {
   );
 };
 
-export { CourseTab };
+export default CourseTab;

@@ -1,7 +1,7 @@
 import { useRouteMatch, Route, Switch, NavLink } from 'react-router-dom';
 
-import { CourseTab } from './course-tab/course-tab';
-import { UserTab } from './user-tab/user-tab';
+import CourseTab from '../../course/course-tab/course-tab';
+import UserTab from '../../user/user-tab/user-tab';
 import './admin-console.scss';
 
 const AdminConsole = () => {

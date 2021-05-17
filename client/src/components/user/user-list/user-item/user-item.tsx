@@ -21,4 +21,4 @@ const UserItem = (props: any) => {
   );
 };
 
-export default UserItem;
+export { UserItem };

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import UserList from '../../../user/user-list/user-list';
-import { Button } from '../../../ui-kit';
+import { UserList } from '../user-list/user-list';
+import { Button } from '../../ui-kit';
 import './user-tab.scss';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL as string;
@@ -80,4 +80,4 @@ const UserTab = () => {
   );
 };
 
-export { UserTab };
+export default UserTab;

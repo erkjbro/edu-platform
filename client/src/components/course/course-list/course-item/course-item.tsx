@@ -17,4 +17,4 @@ const CourseItem = (props: any) => {
   );
 };
 
-export default CourseItem;
+export { CourseItem };

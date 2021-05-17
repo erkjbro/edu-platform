@@ -1,4 +1,4 @@
-import UserItem from './user-item/user-item';
+import { UserItem } from './user-item/user-item';
 import './user-list.scss';
 
 const UserList = ({ users }: { users: any }) => {
@@ -13,4 +13,4 @@ const UserList = ({ users }: { users: any }) => {
   );
 };
 
-export default UserList;
+export { UserList };

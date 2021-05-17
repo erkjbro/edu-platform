@@ -1,4 +1,4 @@
-import CourseItem from './course-item/course-item';
+import { CourseItem } from './course-item/course-item';
 import './course-list.scss';
 
 const CourseList = ({ courses }: { courses: any }) => {
@@ -13,4 +13,4 @@ const CourseList = ({ courses }: { courses: any }) => {
   );
 };
 
-export default CourseList;
+export { CourseList };
