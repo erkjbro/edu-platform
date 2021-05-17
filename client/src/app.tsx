@@ -39,13 +39,13 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/admin' component={AdminConsole} />
-        <Route path='/course/:courseId' exact component={CourseDetails} />
         <Route path='/course/new' exact component={EditCourse} />
         <Route
           path='/course/edit/:courseId'
           exact
           render={() => <EditCourse editMode />}
         />
+        <Route path='/course/:courseId' exact component={CourseDetails} />
         {/* User Details */}
         {/* Create User */}
         {/* Edit User */}
