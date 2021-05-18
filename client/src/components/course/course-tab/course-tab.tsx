@@ -13,9 +13,9 @@ const CourseTab = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  const { role } = useSelector((state) => state.auth);
+  const auth: any = useSelector((state) => state.auth);
 
-  console.log(role);
+  console.log(auth);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +35,7 @@ const CourseTab = () => {
 
   return (
     <div className='course-tab'>
-      <Button disabled={role !== 'admin'} to='/course/new'>
+      <Button disabled={auth.role !== 'admin'} to='/course/new'>
         New Course
       </Button>
       {error && (
