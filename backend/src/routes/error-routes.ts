@@ -4,6 +4,12 @@ import HttpError from '../models/http-error.js';
 
 const router = express.Router();
 
+router.get('/', (req, res, next) => {
+  res.json({
+    message: 'Status is green.',
+  });
+});
+
 // 404 catch
 router.use(((req, res, next) => {
   const error = new HttpError("Sorry, I don't seem to have that route...", 404);
