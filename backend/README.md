@@ -95,6 +95,8 @@ JWT_KEY
   - ODM for MongoDB
 - mongoose-unique-validator
   - Validation for Mongoose
+- mocha / chai / sinon
+  - Testing use
 
 ## devDependencies
 
