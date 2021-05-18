@@ -33,7 +33,9 @@ const CourseTab = () => {
 
   return (
     <div className='course-tab'>
-      {role === 'admin' && <Button to='/course/new'>New Course</Button>}
+      <Button disabled={!role || role !== 'admin'} to='/course/new'>
+        New Course
+      </Button>
       {error && (
         <h1 style={{ color: 'red' }} onClick={() => setError('')}>
           {error}
