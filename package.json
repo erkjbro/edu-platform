@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "frontend": "yarn --cwd client start",
-    "backend": "yarn --cwd backend start",
+    "backend": "yarn --cwd backend start:dev",
     "start": "concurrently \"yarn run backend\" \"yarn run frontend\""
   },
   "dependencies": {
