@@ -12,6 +12,13 @@ The purpose of this application is to provide an admin panel for managing a plat
 - `yarn install`: Install all dependencies. Be sure to do this in the project root and also the `backend` and `client`.
 - `yarn start`: Start the project for development
 
+```bash
+pwd/backend: yarn install
+pwd/client: yarn install
+pwd/: yarn install
+pwd/: yarn start
+```
+
 # Project structure & architecture
 
 **Dependencies:**
@@ -76,7 +83,53 @@ See the `backend` and `client` directories for more information. The backend and
 
 > Development, Staging, and Production Info?
 
-Nothing setup yet. Planning to use AWS Amplify for the frontend and AWS EB for the backend. I'll share a link once the project is live.
+Web client is hosted using AWS Amplify at [elearning.erkjbro.com](https://elearning.erkjbro.com/)
+
+It's deployed automatically whenever updates are pushed to the `main` branch.
+
+Public API is hosted using EB CLI at [elarning.erkjbro.io](https://elearning.erkjbro.io/)
+
+It has to be manually deployed from the cli using `eb deploy`. I set the envars using eb, created an environment in us-east-2, added an ALB, created an SSL certificate, and setup an alias in Route 53 using the certificate so that the API can take traffic on port 443.
+
+Database is hosted using MongoDB Atlas
+
+Dev and Prod both point to the same cluster but different databases.
+
+# Summary of what was built and not built
+
+The focus was on having an admin panel and demonstrating CRUD operations with a mobile-first api. It's also my first time using typescript for a full-stack app so I had to cut some corners for time. I created CRUD operations for courses, allowed student and admin signup, user creation, and ways to view lists and details for courses and users.
+
+I made a button for course enrollment but I did not implement it. It's just to demonstrate the expected behavior.
+
+# Context decisions on framework choices
+
+I went with the MERN stack because there wasn't time to try and learn React Native and Postgres all within a week. I'm more comfortable with the MERN stack and I also wanted to try experimenting with TypeScript while under pressure to deliver.
+
+React & Redux
+Node & Express
+MongoDB
+
+# Areas for improvements
+
+I started using TypeScript just a few weeks ago, so there are a lot of areas that could be improved so that this application is strongly typed.
+
+- Client
+  - testing
+  - stronger typing
+  - form validation
+  - reusable list structures
+  - convert to a microfrontend or separate web/mobile apps
+  - more usage of redux
+  - develop course creation
+  - add teachers...? or TA's to assist students
+  - profile management for passwords, etc.
+  - Students enroll in courses.
+- API
+  - testing
+  - stronger typing
+  - express validation
+  - dockerize
+  - microservice or SAM perhaps? could be serverless
 
 # Collaborators
 
