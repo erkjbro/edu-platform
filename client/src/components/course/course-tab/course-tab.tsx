@@ -15,6 +15,8 @@ const CourseTab = () => {
 
   const { role } = useSelector((state) => state.auth);
 
+  console.log(role);
+
   useEffect(() => {
     (async () => {
       try {
