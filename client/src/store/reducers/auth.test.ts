@@ -13,7 +13,7 @@ describe('auth reducer', () => {
       userId: null,
       error: null,
       userRole: null,
-      loading: false,
+      isLoading: false,
       authRedirectPath: '/',
     });
   });
@@ -26,7 +26,7 @@ describe('auth reducer', () => {
           userId: null,
           error: null,
           userRole: 'student',
-          loading: false,
+          isLoading: false,
           authRedirectPath: '/',
         },
         {
@@ -43,7 +43,7 @@ describe('auth reducer', () => {
       userId: 'some-user-id',
       userRole: 'student',
       error: null,
-      loading: false,
+      isLoading: false,
       authRedirectPath: '/',
     });
   });
