@@ -33,7 +33,7 @@ const CourseTab = () => {
 
   return (
     <div className='course-tab'>
-      <Button disabled={!role || role !== 'admin'} to='/course/new'>
+      <Button disabled={role !== 'admin'} to='/course/new'>
         New Course
       </Button>
       {error && (
