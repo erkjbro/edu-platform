@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
 import { CourseDoc } from './course.js';
 
@@ -60,6 +61,10 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
   ],
+});
+
+userSchema.plugin(uniqueValidator, {
+  message: 'Error, expected {PATH} to be unique.',
 });
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
