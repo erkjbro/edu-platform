@@ -1,17 +1,23 @@
 {
   "name": "edu-backend",
   "version": "0.1.0",
-  "main": "dist/index.js",
   "private": true,
+  "main": "dist/index.js",
+  "engines": {
+    "node": "14.16.1"
+  },
   "repository": "https://github.com/erkjbro/edu-platform.git",
   "author": "Erik J Brown <erkjbro@erikjbrown.tech>",
   "description": "REST API for the edu platfrom",
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start:build": "tsc -w",
     "start:run": "DOTENV_CONFIG_PATH=.env.development nodemon -r dotenv/config dist/index.js",
-    "start": "concurrently yarn:start:*"
+    "start:dev": "concurrently \"yarn run start:build\" \"yarn run start:run\"",
+    "prestart": "tsc",
+    "start": "DOTENV_CONFIG_PATH=.env.production node -r dotenv/config dist/index.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
