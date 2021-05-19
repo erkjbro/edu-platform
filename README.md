@@ -113,23 +113,29 @@ MongoDB
 
 I started using TypeScript just a few weeks ago, so there are a lot of areas that could be improved so that this application is strongly typed.
 
+Also, this was somewhat rushed. I don't think having admin signup and login intermingled with the general user area is a good practice. With more time I would probably develop a separate admin-only client. It would be useful to have react native clients too.
+
+Socket IO would be helpful too. For example, a student could be viewing their courses and then get a notification and updated list when an admin assigns a new course to them.
+
 - Client
   - testing
   - stronger typing
   - form validation
   - reusable list structures
   - convert to a microfrontend or separate web/mobile apps
-  - more usage of redux
+  - more usage of redux (it only handles auth atm)
   - develop course creation
   - add teachers...? or TA's to assist students
   - profile management for passwords, etc.
-  - Students enroll in courses.
+  - students enroll in courses
+  - course content! There's nothing to do in the app yet once enrolled in a course.
+  - user data should be more robust. phone number, location, language preference, etc.
 - API
   - testing
   - stronger typing
   - express validation
   - dockerize
-  - microservice or SAM perhaps? could be serverless
+  - microservice or SAM perhaps? could be serverless. monolithic apps aren't exactly scalable.
 
 # Collaborators
 
