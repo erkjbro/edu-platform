@@ -71,6 +71,7 @@ See the `backend` and `client` directories for more information. The backend and
 - Signup
 - Signup (Auth)
 - Login
+- / (ALB Health Check)
 - 404 Route
 - 500 Route
 
