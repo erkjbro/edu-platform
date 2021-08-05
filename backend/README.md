@@ -6,7 +6,7 @@ Built using Node, Express, and TypeScript.
 
 Note! This app was developed to run with **node@14.16.1**. It requires _^14_ so that top-level async/await is available.
 
-Also, create a `.end.development` file in the backend directory and populate it with the required ENVARS. See below.
+Also, create a `.env.development` file in the backend directory and populate it with the required ENVARS. See below.
 
 ## Endpoints
 
